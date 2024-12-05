@@ -1,0 +1,14 @@
+{
+  "name": "react-native-keyevent-config-plugin",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "test": "expo-module test",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module"
+  },
+  "devDependencies": {
+    "expo-module-scripts": "^4.0.2"
+  }
+}
