@@ -104,24 +104,24 @@ const withAndroidMainActivityBody: ConfigPlugin = (config) => {
   // @ts-ignore
   const newConfig = withMainActivity(config, (config) => {
     const newSrc = `
-  override fun onKeyDown(keyCode: int, event: KeyEvent): boolean {
+  override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
     KeyEventModule.getInstance().onKeyDownEvent(keyCode, event)
     super.onKeyDown(keyCode, event)
     return true
   }
 
-  override fun onKeyUp(keyCode: int, event: KeyEvent): boolean {
+  override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
     KeyEventModule.getInstance().onKeyUpEvent(keyCode, event)
     super.onKeyUp(keyCode, event)
     return true
   }
 
-  override fun onKeyMultiple(keyCode: int, repeatCount: int, event:KeyEvent): boolean {
+  override fun onKeyMultiple(keyCode: Int, repeatCount: Int, event:KeyEvent): Boolean {
     KeyEventModule.getInstance().onKeyMultipleEvent(keyCode, repeatCount, event)
     return super.onKeyMultiple(keyCode, repeatCount, event)
   }
 
-  override fun dispatchKeyEvent(event: KeyEvent): boolean {
+  override fun dispatchKeyEvent(event: KeyEvent): Boolean {
     if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
       KeyEventModule.getInstance().onKeyUpEvent(event.getKeyCode(), event)
       return false
