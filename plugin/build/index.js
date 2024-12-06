@@ -77,14 +77,14 @@ const withAndroidMainActivityImport = (config) => {
     // @ts-ignore
     const newConfig = (0, config_plugins_1.withMainActivity)(config, (config) => {
         const newSrc = [
-            "import android.view.KeyEvent;",
-            "import com.github.kevinejohn.keyevent.KeyEventModule;",
+            "import android.view.KeyEvent",
+            "import com.github.kevinejohn.keyevent.KeyEventModule",
         ];
         const newConfig = (0, generateCode_1.mergeContents)({
             tag: "react-native-keyevent-import",
             src: config.modResults.contents,
             newSrc: newSrc.join("\n"),
-            anchor: `;`,
+            anchor: "",
             offset: 1,
             comment: "//",
         });
@@ -100,35 +100,35 @@ const withAndroidMainActivityBody = (config) => {
     const newConfig = (0, config_plugins_1.withMainActivity)(config, (config) => {
         const newSrc = `
   override fun onKeyDown(keyCode: int, event: KeyEvent): boolean {
-    KeyEventModule.getInstance().onKeyDownEvent(keyCode, event);
-    super.onKeyDown(keyCode, event);
-    return true;
+    KeyEventModule.getInstance().onKeyDownEvent(keyCode, event)
+    super.onKeyDown(keyCode, event)
+    return true
   }
 
   override fun onKeyUp(keyCode: int, event: KeyEvent): boolean {
-    KeyEventModule.getInstance().onKeyUpEvent(keyCode, event);
-    super.onKeyUp(keyCode, event);
-    return true;
+    KeyEventModule.getInstance().onKeyUpEvent(keyCode, event)
+    super.onKeyUp(keyCode, event)
+    return true
   }
 
   override fun onKeyMultiple(keyCode: int, repeatCount: int, event:KeyEvent): boolean {
-    KeyEventModule.getInstance().onKeyMultipleEvent(keyCode, repeatCount, event);
-    return super.onKeyMultiple(keyCode, repeatCount, event);
+    KeyEventModule.getInstance().onKeyMultipleEvent(keyCode, repeatCount, event)
+    return super.onKeyMultiple(keyCode, repeatCount, event)
   }
 
   override fun dispatchKeyEvent(event: KeyEvent): boolean {
     if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-      KeyEventModule.getInstance().onKeyUpEvent(event.getKeyCode(), event);
-      return false;
+      KeyEventModule.getInstance().onKeyUpEvent(event.getKeyCode(), event)
+      return false
     }
-    return super.dispatchKeyEvent(event);
+    return super.dispatchKeyEvent(event)
   }
 `;
         const newConfig = (0, generateCode_1.mergeContents)({
             tag: "react-native-keyevent-body",
             src: config.modResults.contents,
             newSrc,
-            anchor: `class MainActivity : ReactActivity() {`,
+            anchor: /class MainActivity : ReactActivity\(\) {/,
             offset: 1,
             comment: "//",
         });
