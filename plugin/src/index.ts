@@ -103,62 +103,38 @@ const withAndroidMainActivityImport: ConfigPlugin = (config) => {
 const withAndroidMainActivityBody: ConfigPlugin = (config) => {
   // @ts-ignore
   const newConfig = withMainActivity(config, (config) => {
-    const newSrc = [
-      "@Override",
-      "public boolean onKeyDown(int keyCode, KeyEvent event) {",
-      "",
-      "  // // Uncomment this is key events should only trigger once when key is held down",
-      "  // if (event.getRepeatCount() == 0) {",
-      "  //   KeyEventModule.getInstance().onKeyDownEvent(keyCode, event);",
-      "  // }",
-      "",
-      "  // // This will trigger the key repeat if the key is held down",
-      "  // // Comment this out if uncommenting the above",
-      "  KeyEventModule.getInstance().onKeyDownEvent(keyCode, event);",
-      "",
-      "  // // Uncomment this if you want the default keyboard behavior",
-      "  // return super.onKeyDown(keyCode, event);",
-      "",
-      "  // // The default keyboard behaviour wll be overridden",
-      "  // // This is similar to what e.preventDefault() does in a browser",
-      "  // // comment this if uncommenting the above",
-      "  super.onKeyDown(keyCode, event);",
-      "  return true;",
-      "}",
-      "",
-      "@Override",
-      "public boolean onKeyUp(int keyCode, KeyEvent event) {",
-      "  KeyEventModule.getInstance().onKeyUpEvent(keyCode, event);",
-      "",
-      "  // // Uncomment this if you want the default keyboard behavior",
-      "  // return super.onKeyUp(keyCode, event);",
-      "",
-      "  // // The default keyboard behaviour wll be overridden",
-      "  // // This is similar to what e.preventDefault() does in a browser",
-      "  // // comment this if uncommenting the above",
-      "  super.onKeyUp(keyCode, event);",
-      "  return true;",
-      "}",
-      "",
-      "@Override",
-      "public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {",
-      "    KeyEventModule.getInstance().onKeyMultipleEvent(keyCode, repeatCount, event);",
-      "    return super.onKeyMultiple(keyCode, repeatCount, event);",
-      "}",
-      "@Override",
-      "public boolean dispatchKeyEvent(KeyEvent event) {",
-      "   if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {",
-      "       KeyEventModule.getInstance().onKeyUpEvent(event.getKeyCode(), event);",
-      "       return false;",
-      "   }",
-      "   return super.dispatchKeyEvent(event);",
-      "}",
-    ];
+    const newSrc = `
+  override fun onKeyDown(keyCode: int, event: KeyEvent): boolean {
+    KeyEventModule.getInstance().onKeyDownEvent(keyCode, event);
+    super.onKeyDown(keyCode, event);
+    return true;
+  }
+
+  override fun onKeyUp(keyCode: int, event: KeyEvent): boolean {
+    KeyEventModule.getInstance().onKeyUpEvent(keyCode, event);
+    super.onKeyUp(keyCode, event);
+    return true;
+  }
+
+  override fun onKeyMultiple(keyCode: int, repeatCount: int, event:KeyEvent): boolean {
+    KeyEventModule.getInstance().onKeyMultipleEvent(keyCode, repeatCount, event);
+    return super.onKeyMultiple(keyCode, repeatCount, event);
+  }
+
+  override fun dispatchKeyEvent(event: KeyEvent): boolean {
+    if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+      KeyEventModule.getInstance().onKeyUpEvent(event.getKeyCode(), event);
+      return false;
+    }
+    return super.dispatchKeyEvent(event);
+  }
+`;
+
     const newConfig = mergeContents({
       tag: "react-native-keyevent-body",
       src: config.modResults.contents,
-      newSrc: newSrc.join("\n"),
-      anchor: `public class MainActivity extends ReactActivity {`,
+      newSrc,
+      anchor: `class MainActivity : ReactActivity() {`,
       offset: 1,
       comment: "//",
     });
